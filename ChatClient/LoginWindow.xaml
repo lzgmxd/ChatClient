@@ -1,0 +1,168 @@
+﻿<local:BaseWindow x:Class="ChatClient.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatClient"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:validationRule="clr-namespace:ChatClient.ValidationRule"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="548" Width="426.6"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Foreground="{x:Null}" 
+        Background="{x:Null}"
+        MouseMove="Window_MouseMove"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonFlat">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#00A6FF"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+          >
+
+        <Rectangle Opacity="1" Fill="White" HorizontalAlignment="Left" Height="528" Margin="10,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="406">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="14" Color="#FF858484" Direction="90" ShadowDepth="2"/>
+            </Rectangle.Effect>
+        </Rectangle>
+        <Grid x:Name="gridTitle" HorizontalAlignment="Left" Height="34" Margin="11,11,0,0" VerticalAlignment="Top" Width="403" Background="#FFF7F7F7">
+            <Button x:Name="btnClose" Style="{StaticResource ButtonFlat}" Content="X" HorizontalAlignment="Left" Height="34" Width="35" Margin="367,0,0,0" Click="btnClose_Click" VerticalAlignment="Top"></Button>
+            <Label x:Name="lbTitle" Content="Label" Height="34" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="16" Padding="5,6,5,0" Margin="10,0,0,0"/>
+            <Button x:Name="btnWindowMin" Style="{StaticResource ButtonFlat}" Content="一" HorizontalAlignment="Left" Height="34" Width="35" Margin="332,0,0,0" Click="btnWindowMin_Click" VerticalAlignment="Top"/>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Background="#F4F5F5F5" Width="404" Margin="11,45,0,0" Height="492" VerticalAlignment="Top">
+            <Label x:Name="label" Content="Sign in" HorizontalAlignment="Left" Margin="123.384,50.97,0,0" VerticalAlignment="Top" Height="80" Width="167.79" FontFamily="Gulim" FontSize="48" Foreground="#DD0032D1"/>
+            <materialDesign:PackIcon Kind="Account" Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" Margin="104,196,0,0" />
+            <TextBox x:Name="NameTextBox" materialDesign:HintAssist.Hint="用户名" Margin="126,186,110,277">
+                <TextBox.Text>
+                    <Binding Path="Text" ElementName="NameTextBox" UpdateSourceTrigger="LostFocus">
+                        <Binding.ValidationRules>
+                            <validationRule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <materialDesign:PackIcon Grid.Column="0" Kind="Key" Margin="104,261,0,0" Foreground="{Binding ElementName=FloatingPasswordBox, Path=BorderBrush}" />
+            <PasswordBox x:Name="FloatingPasswordBox"
+                         Margin="125,242,111,215"
+                         materialDesign:HintAssist.Hint="密码"
+                         Style="{DynamicResource MaterialDesignFloatingHintPasswordBox}" >
+            </PasswordBox>
+
+
+            <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+                <Button Style="{DynamicResource MaterialDesignRaisedButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" Margin="152,340,152,120" Width="100" ToolTip="登录">
+                    <Button.CommandParameter>
+                        <StackPanel Margin="16">
+                            <Label Content="正在登录..."></Label>
+                            <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}" HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
+                            <Button Style="{DynamicResource MaterialDesignFlatButton}" IsCancel="True" 
+                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                    CommandParameter="Sample2Cancel"
+                                    HorizontalAlignment="Center">取消</Button>
+                        </StackPanel>
+                    </Button.CommandParameter>
+                    登录
+                </Button>
+
+            </materialDesign:DialogHost>
+
+
+            <StackPanel>
+            <materialDesign:Flipper Style="{StaticResource MaterialDesignCardFlipper}" Margin="4 4 0 0" >
+                <materialDesign:Flipper.FrontContent>
+                    <Grid Height="256" Width="200">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="160" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Stretch">
+                            <materialDesign:PackIcon Kind="AccountCircle" Height="128" Width="128"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </materialDesign:ColorZone>
+                        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock>James Willock</TextBlock>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                Margin="0 4 0 0"
+                                >EDIT</Button>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:Flipper.FrontContent>
+                <materialDesign:Flipper.BackContent>
+                    <Grid Height="256" Width="200">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <materialDesign:ColorZone Mode="Accent" Padding="6">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                HorizontalAlignment="Left">
+                                    <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Right" />
+                                </Button>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">EDIT USER</TextBlock>
+                            </StackPanel>
+                        </materialDesign:ColorZone>
+                        <Grid Grid.Row="1" Margin="0 6 0 0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                          Width="172">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBox materialDesign:HintAssist.Hint="First name" materialDesign:HintAssist.IsFloating="True"
+                                 Margin="0 12 0 0">James</TextBox>
+                            <TextBox Grid.Row="1" materialDesign:HintAssist.Hint="Last name" materialDesign:HintAssist.IsFloating="True"
+                                 Margin="0 12 0 0">Willock</TextBox>
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right">
+                                <TextBlock VerticalAlignment="Center">Email Contact</TextBlock>
+                                <ToggleButton Margin="8 0 0 0"></ToggleButton>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right">
+                                <TextBlock VerticalAlignment="Center">Telephone Contact</TextBlock>
+                                <ToggleButton Margin="8 0 0 0"></ToggleButton>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </materialDesign:Flipper.BackContent>
+            </materialDesign:Flipper>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</local:BaseWindow>
+
+
+
